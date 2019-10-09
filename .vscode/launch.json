@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "name": "Listen for XDebug",
+            "type": "php",
+            "request": "launch",
+            "port": 9001
+        },
+        {
+            "name": "Docker XDebug",
+            "type": "php",
+            "request": "launch",
+            "port": 9099,
+            "pathMappings": {
+                "/home/app": "${workspaceRoot}/web"
+            }
+        },
+    ]
+}

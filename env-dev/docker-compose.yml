@@ -1,0 +1,45 @@
+version: "3.7"
+services:
+  web:
+    build:
+      context: ../images/mq-nginx
+      dockerfile: ./dockerfile
+    image: mq-nginx:dev
+    container_name: mq_web_dev
+    ports:
+      - "80:80"
+    depends_on:
+      - php
+    links:
+      - php
+    volumes:
+      - ../web:/home/app
+    working_dir: /home/app
+  php:
+    build:
+      context: ../images/mq-php
+      dockerfile: ./dockerfile
+    container_name: mq_php_dev
+    image: mq-php-fpm7.2:dev
+    volumes:
+      - ../web:/home/app
+    ports:
+      - "9001:9000"
+    working_dir: /home/app
+    environment:
+      - TEST_RABBITMQ_HOST=rabbitmq
+      - TOXIPROXY_HOST=proxy
+      - TOXIPROXY_AMQP_PORT=5673
+    links:
+      - rabbitmq
+    depends_on:
+      - rabbitmq
+  rabbitmq:
+    container_name: mq_dev
+    image: rabbitmq:latest
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_DEFAULT_VHOST=/
+    # ports:
+    #   - "5672:5672"

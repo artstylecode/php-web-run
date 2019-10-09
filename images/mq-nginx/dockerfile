@@ -1,0 +1,3 @@
+FROM registry.cn-shenzhen.aliyuncs.com/artcoding/nginx:dev
+RUN rm -rf /etc/nginx/conf.d/*
+COPY ./conf/conf.d/* /etc/nginx/conf.d/
